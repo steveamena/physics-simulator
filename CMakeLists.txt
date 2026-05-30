@@ -4,6 +4,9 @@ project(PhysicsSimulator)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+    ${CMAKE_SOURCE_DIR}/bin)
+
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 
 file(GLOB SRC_FILES src/collision/*.cpp)

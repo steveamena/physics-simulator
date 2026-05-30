@@ -53,21 +53,17 @@ python build.py run
 ```txt
 project/
 │
-├── build/
+├── bin/             # Generated executables
+├── build/           # CMake/Ninja build files
 ├── src/
 ├── CMakeLists.txt
-├── build.py
+├── build.py         # Build tool entry point
 └── README.md
 ```
 
-## Motivation
+## Project Goals
 
 This project is primarily a learning and experimentation environment for understanding how physics engines and simulation systems work internally.
-
-The long-term goal is to progressively build more advanced systems from scratch instead of relying on existing physics engines.
-
-
-## Project Goals
 
 The purpose of this project is to explore:
 
@@ -78,6 +74,8 @@ The purpose of this project is to explore:
 * Spatial partitioning
 * Real-time simulation systems
 * Game physics fundamentals
+
+The long-term goal is to progressively build more advanced systems from scratch instead of relying on existing physics engines.
 
 Future planned features may include:
 
