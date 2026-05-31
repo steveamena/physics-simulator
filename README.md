@@ -75,7 +75,7 @@ project/
 └── README.md
 ```
 
-## Project Goals
+## Project Goalsa
 
 This project is primarily a learning and experimentation environment for understanding how physics engines and simulation systems work internally.
 
