@@ -27,6 +27,7 @@ A simple particle system featuring:
 - Ninja
 - SFML 3
 - Python 3
+- ImGui-SFML
 
 ### Build commands:
 
