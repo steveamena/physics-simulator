@@ -101,6 +101,4 @@ Future planned features may include:
 - Quadtrees
 - Different integrations
 - Soft body simulation
-- Fluid simulation
-- Springs and joints
 - Multithreading experiments
