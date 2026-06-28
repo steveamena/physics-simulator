@@ -1,8 +1,8 @@
 # Physics Simulator
 
-A physics simulation project written in C++ using SFML.
+> A performance-oriented 2D physics engine written in modern C++.
 
-This repository started as a simple particle collision simulator and will gradually evolve into a larger experimental physics sandbox featuring different simulation systems, collision detection methods, integration techniques, and real-time rendering experiments.
+This project is a personal engineering laboratory focused on implementing physics simulations from scratch while exploring high-performance software engineering techniques.
 
 ## Current Simulations
 
@@ -22,9 +22,9 @@ A simple particle system featuring:
 ![Demo](assets/demo_collision.gif)
 ## Build
 
-### Dependencies:
+### Requirements
 
-- C++11 or newer
+- C++17
 - CMake
 - Ninja
 - SFML 3
@@ -69,6 +69,7 @@ python simulator.py rebuild
 ```txt
 project/
 │
+├── assets/          # Images, GIFs and resources
 ├── bin/             # Generated executables
 ├── build/           # CMake/Ninja build files
 ├── buildtools/      # Build system scripts
