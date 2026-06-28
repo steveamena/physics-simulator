@@ -34,6 +34,20 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
         // will be wired later
     }
 
+    ImGui::Text("Frame Time: %.2f ms", state.frameTimeMs);
+
+    ImGui::Separator();
+
+    ImGui::Text("Particles: %llu", state.particleCount);
+
+    ImGui::Text("Collisions: %llu", state.collisionCount);
+
+    ImGui::Separator();
+
+    ImGui::Text("Memory: %.2f MB", state.memoryUsageMB);
+
+    ImGui::Text("CPU: %.1f %%", state.cpuUsage);
+
     ImGui::End();
 }
 
