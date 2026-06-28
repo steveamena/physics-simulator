@@ -18,6 +18,8 @@ A simple particle system featuring:
 - Randomized particle initialization
 - Real-time rendering
 
+
+![Demo](assets/demo_collision.gif)
 ## Build
 
 ### Dependencies:
