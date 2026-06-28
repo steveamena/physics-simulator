@@ -11,9 +11,9 @@ using Particles = std::vector<Particle>;
 class Collisions
 {
 public:
-    Collisions();
+    Collisions(int particle_count, float radius, float mass);
     void update(float dt, const SimulationState &state);
-    void render(sf::RenderWindow &window);
+    Particles getParticles();
 
 private:
     Particles particles;

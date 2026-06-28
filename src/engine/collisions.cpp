@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
 #include "collisions.hpp"
@@ -7,16 +6,15 @@ float gravity = 98.f;
 constexpr int LIMIT_FRAME = 60;
 constexpr float WINDOW_WIDTH = 800.f;
 constexpr float WINDOW_HEIGHT = 600.f;
-constexpr int PARTICLE_COUNT = 50;
 
-Collisions::Collisions()
+Collisions::Collisions(int particle_count, float radius, float mass)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    for (int i = 0; i < PARTICLE_COUNT; i++)
+    for (int i = 0; i < particle_count; i++)
     {
-        Particle particle(10.f);
+        Particle particle(radius, mass);
 
         particle.position.x = getRandomRange(
             particle.radius,
@@ -28,7 +26,6 @@ Collisions::Collisions()
             gen);
         particle.velocity.x = getRandomRange(-100.f, 100.f, gen);
         particle.velocity.y = getRandomRange(-100.f, 100.f, gen);
-        particle.syncGraphics();
         this->particles.push_back(std::move(particle));
     }
 }
@@ -136,17 +133,9 @@ void Collisions::update(float dt, const SimulationState &state)
 
     CollisionPairs collisionPairs = detectCollisions(particles);
     calculateVelocitiesAndResolveOverlap(particles, collisionPairs);
-
-    for (auto &particle : particles)
-    {
-        particle.syncGraphics();
-    }
 }
 
-void Collisions::render(sf::RenderWindow &window)
+Particles Collisions::getParticles()
 {
-    for (const auto &particle : this->particles)
-    {
-        particle.render(window);
-    }
+    return particles;
 }

@@ -77,7 +77,7 @@ project/
 
 ## Project Goals
 
-This project is primarily a learning and experimentation environment for understanding how physics engines and simulation systems work internally.
+This project is primarily a experimentation environment for understanding how physics engines and simulation systems work internally.
 
 The purpose of this project is to explore:
 
