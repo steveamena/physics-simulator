@@ -26,6 +26,9 @@ int main()
 
     uiManager.init(window);
 
+    auto lastFPSUpdate = std::chrono::steady_clock::now();
+    int frameCount = 0;
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -46,6 +49,17 @@ int main()
         uiManager.render(window);
         collisions.render(window);
         window.display();
+
+        // FPS statistics
+        frameCount++;
+        auto currentTime = std::chrono::steady_clock::now();
+        auto elapsed = std::chrono::duration<float>(currentTime - lastFPSUpdate);
+        if (elapsed.count() >= 1.0f)
+        {
+            state.fps = static_cast<float>(frameCount) / elapsed.count();
+            lastFPSUpdate = currentTime;
+            frameCount = 0;
+        }
     }
     ImGui::SFML::Shutdown();
 

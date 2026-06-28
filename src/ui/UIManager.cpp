@@ -1,3 +1,5 @@
+#include <iostream>
+#include <string.h>
 #include "UIManager.hpp"
 
 void UIManager::init(sf::RenderWindow &window)
@@ -21,6 +23,8 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
     ImGui::SliderFloat("Gravity", &state.gravity, -1000.0f, 1000.0f);
 
     ImGui::SliderFloat("Time Scale", &state.timeScale, 0.0f, 2.0f);
+
+    ImGui::Text("FPS: %.1f", state.fps);
 
     if (ImGui::Button(state.paused ? "Resume" : "Pause"))
         state.paused = !state.paused;
