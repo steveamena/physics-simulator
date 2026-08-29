@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string.h>
-#include "UIManager.hpp"
+#include "ui_manager.hpp"
 
 void UIManager::init(sf::RenderWindow &window)
 {

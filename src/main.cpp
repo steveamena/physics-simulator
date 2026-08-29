@@ -1,14 +1,17 @@
 #include <SFML/Graphics.hpp>
 
-#include "SimulationState.h"
-#include "ui/UIManager.hpp"
+#include "simulation_state.h"
+#include "ui/ui_manager.hpp"
 #include "engine/collisions.hpp"
 #include "render/renderer.hpp"
+#include "engine/Simulations/gravitational_simulation.hpp"
+#include "statistics_manager.hpp"
+
 
 constexpr int LIMIT_FRAME = 60;
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
-constexpr int PARTICLE_COUNT = 30;
+constexpr int PARTICLE_COUNT = 300;
 constexpr float PARTICLE_RADIUS = 5.f;
 constexpr float PARTICLE_MASS = 1.f;
 
@@ -17,14 +20,15 @@ int main()
     sf::Clock clock;
     ParticleRenderer ParticleRenderer(PARTICLE_COUNT, PARTICLE_RADIUS);
     SimulationState state;
+    StatisticsManager statistics_manager;
     UIManager uiManager;
     Collisions collisions(PARTICLE_COUNT, PARTICLE_RADIUS, PARTICLE_MASS);
 
+    // Gravitational
+    GravitationalSimulation GravitationalSimulation(4, PARTICLE_RADIUS, PARTICLE_MASS, 1000000.f);
+
     sf::RenderWindow window = initializeWindowRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, LIMIT_FRAME);
     uiManager.init(window);
-
-    auto lastFPSUpdate = std::chrono::steady_clock::now();
-    int frameCount = 0;
 
     // Start the game loop
     while (window.isOpen())
@@ -47,17 +51,8 @@ int main()
         ParticleRenderer.render(window, collisions.getParticles());
         window.display();
 
-        // FPS statistics
-        frameCount++;
-        auto currentTime = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration<float>(currentTime - lastFPSUpdate);
-
-        if (elapsed.count() >= 0.25f)
-        {
-            state.fps = static_cast<float>(frameCount) / elapsed.count();
-            lastFPSUpdate = currentTime;
-            frameCount = 0;
-        }
+        // Usage resources statistics
+        statistics_manager.update(state, static_cast<float>(dt.asSeconds()), PARTICLE_COUNT, 0);
     }
     ImGui::SFML::Shutdown();
 

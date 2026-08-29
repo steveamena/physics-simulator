@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "particle.hpp"
-#include "SimulationState.h"
+#include "simulation_state.h"
 
 using CollisionPairs = std::vector<std::tuple<size_t, size_t>>;
 using Particles = std::vector<Particle>;

@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 #include "imgui-SFML.h"
-#include "SimulationState.h"
+#include "simulation_state.h"
 #include <SFML/Graphics.hpp>
 
 class UIManager

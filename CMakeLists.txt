@@ -39,7 +39,7 @@ target_include_directories(imgui-sfml PUBLIC ${IMGUI_DIR} ${IMGUI_SFML_DIR})
 target_link_libraries(imgui-sfml PUBLIC imgui SFML::Graphics SFML::Window SFML::System)
 
 # Main App
-file(GLOB SRC_FILES src/*.cpp src/*/*.cpp)
+file(GLOB_RECURSE SRC_FILES src/*.cpp)
 
 add_executable(physics-simulator ${SRC_FILES})
 
