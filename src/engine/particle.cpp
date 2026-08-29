@@ -1,23 +1,23 @@
 #include "Particle.hpp"
 
-Particle::Particle(float radius, float mass)
+Particle::Particle(float radius, float mass):
+    radius(radius), mass(mass){}
+
+void Particle::update(float dt, float window_width, float window_height)
 {
-    this->radius = radius;
-    this->mass = mass;
+    m_integrator.integrate(*this, dt);
+    constrain_to_bounds(window_width, window_height);
 }
 
-void Particle::update(float dt, float windows_width, float window_height)
-{
-    velocity += acceleration * dt;
-    position += velocity * dt;
-    if (position.x - radius < 0)
+void Particle::constrain_to_bounds(float width, float height){
+        if (position.x - radius < 0)
     {
         position.x = radius;
         velocity.x *= -1.0f;
     }
-    else if (position.x + radius > windows_width)
+    else if (position.x + radius > width)
     {
-        position.x = windows_width - radius;
+        position.x = width - radius;
         velocity.x *= -1.0f;
         }
 
@@ -26,9 +26,9 @@ void Particle::update(float dt, float windows_width, float window_height)
             position.y = radius;
             velocity.y *= -1.0f;
         }
-        else if (position.y + radius > window_height)
+        else if (position.y + radius > height)
         {
-            position.y = window_height - radius;
+            position.y = height - radius;
             velocity.y *= -1.0f;
         }
 }

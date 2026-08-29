@@ -1,4 +1,5 @@
 #include "gravitational_simulation.hpp"
+#include "../utils/random.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -8,11 +9,7 @@ constexpr int LIMIT_FRAME = 60;
 constexpr float WINDOW_WIDTH = 800.f;
 constexpr float WINDOW_HEIGHT = 600.f;
 
-float getRandomRange(float start, float end, std::mt19937 &gen)
-{
-    std::uniform_real_distribution<float> dist(start, end);
-    return dist(gen);
-}
+
 
 GravitationalSimulation::GravitationalSimulation(int particle_count, float radius, float mass, float gravitationalConstant)
     : m_G(gravitationalConstant)
@@ -50,7 +47,6 @@ void GravitationalSimulation::update(float dt, const SimulationState &state)
     for (auto& particle : m_particles)
     {
         particle.update(dt * state.timeScale, WINDOW_WIDTH, WINDOW_HEIGHT);
-        std::cout<<particle.acceleration.x << ", " << particle.acceleration.y << "\n";
     }
 }
 

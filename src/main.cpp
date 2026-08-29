@@ -11,7 +11,7 @@
 constexpr int LIMIT_FRAME = 60;
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
-constexpr int PARTICLE_COUNT = 300;
+constexpr int PARTICLE_COUNT = 30;
 constexpr float PARTICLE_RADIUS = 5.f;
 constexpr float PARTICLE_MASS = 1.f;
 
@@ -25,7 +25,7 @@ int main()
     Collisions collisions(PARTICLE_COUNT, PARTICLE_RADIUS, PARTICLE_MASS);
 
     // Gravitational
-    GravitationalSimulation GravitationalSimulation(4, PARTICLE_RADIUS, PARTICLE_MASS, 1000000.f);
+    GravitationalSimulation GravitationalSimulation(30, PARTICLE_RADIUS, PARTICLE_MASS, 1000000.f);
 
     sf::RenderWindow window = initializeWindowRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, LIMIT_FRAME);
     uiManager.init(window);
@@ -43,12 +43,14 @@ int main()
         }
         sf::Time dt = clock.restart();
         uiManager.update(window, dt, state);
-        collisions.update(dt.asSeconds(), state);
+        //collisions.update(dt.asSeconds(), state);
+        GravitationalSimulation.update(dt.asSeconds(), state);
 
         // Render
         window.clear();
         uiManager.render(window);
-        ParticleRenderer.render(window, collisions.getParticles());
+        //ParticleRenderer.render(window, collisions.getParticles());
+        ParticleRenderer.render(window, GravitationalSimulation.getParticles());
         window.display();
 
         // Usage resources statistics
