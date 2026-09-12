@@ -25,7 +25,7 @@ int main()
     Collisions collisions(PARTICLE_COUNT, PARTICLE_RADIUS, PARTICLE_MASS);
 
     // Gravitational
-    GravitationalSimulation GravitationalSimulation(30, PARTICLE_RADIUS, PARTICLE_MASS, 1000000.f);
+    GravitationalSimulation GravitationalSimulation(PARTICLE_COUNT, PARTICLE_RADIUS, PARTICLE_MASS);
 
     sf::RenderWindow window = initializeWindowRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, LIMIT_FRAME);
     uiManager.init(window);
@@ -54,7 +54,11 @@ int main()
         window.display();
 
         // Usage resources statistics
-        statistics_manager.update(state, static_cast<float>(dt.asSeconds()), PARTICLE_COUNT, 0);
+        statistics_manager.update(
+            state,
+            static_cast<float>(dt.asSeconds()),
+            static_cast<int>(GravitationalSimulation.getParticles().size()),
+            0);
     }
     ImGui::SFML::Shutdown();
 

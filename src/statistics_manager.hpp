@@ -1,5 +1,6 @@
 #include "simulation_state.h"
 #include <chrono>
+#include <cstdint>
 #include <windows.h>
 #include <psapi.h>
 #include <iostream>
@@ -23,7 +24,7 @@ private:
 
     //CPU usage metrics
     std::chrono::steady_clock::time_point last_cpu_update_;
-    int last_cpu_time_ = 0;
+    std::uint64_t last_cpu_time_ = 0;
     
     // Methods
     float get_memory_usage_mb();

@@ -3,12 +3,12 @@
 
 
 #include <vector>
-#include <random>
+
 
 class GravitationalSimulation
 {
 public:
-    GravitationalSimulation(int particle_count, float radius, float mass, float gravitationalConstant);
+    GravitationalSimulation(int particle_count, float radius, float mass);
 
     void addParticle(const Particle& particle);
 
@@ -17,7 +17,7 @@ public:
     const std::vector<Particle>& getParticles() const;
 
 private:
-    void calculateAccelerations();
+    void calculateAccelerations(float G);
 
 private:
     std::vector<Particle> m_particles;

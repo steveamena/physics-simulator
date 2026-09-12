@@ -4,7 +4,7 @@
 
 void UIManager::init(sf::RenderWindow &window)
 {
-    ImGui::SFML::Init(window);
+    static_cast<void>(ImGui::SFML::Init(window));
 }
 
 void UIManager::handleEvent(const sf::Window &window, const sf::Event &event)
@@ -20,7 +20,7 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
 
     ImGui::Text("Play with the sliders");
 
-    ImGui::SliderFloat("Gravity", &state.gravity, -1000.0f, 1000.0f);
+    ImGui::SliderFloat("Gravitational Constant", &state.gravitationalConstant, 0.0f, 1000.0f);
 
     ImGui::SliderFloat("Time Scale", &state.timeScale, 0.0f, 2.0f);
 
@@ -38,9 +38,9 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
 
     ImGui::Separator();
 
-    ImGui::Text("Particles: %llu", state.particleCount);
+    ImGui::Text("Particles: %d", state.particleCount);
 
-    ImGui::Text("Collisions: %llu", state.collisionCount);
+    ImGui::Text("Collisions: %d", state.collisionCount);
 
     ImGui::Separator();
 

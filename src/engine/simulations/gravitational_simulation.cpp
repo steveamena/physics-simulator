@@ -11,8 +11,7 @@ constexpr float WINDOW_HEIGHT = 600.f;
 
 
 
-GravitationalSimulation::GravitationalSimulation(int particle_count, float radius, float mass, float gravitationalConstant)
-    : m_G(gravitationalConstant)
+GravitationalSimulation::GravitationalSimulation(int particle_count, float radius, float mass)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -42,7 +41,10 @@ GravitationalSimulation::GravitationalSimulation(int particle_count, float radiu
 
 void GravitationalSimulation::update(float dt, const SimulationState &state)
 {
-    calculateAccelerations();
+    if (state.paused)
+        return;
+
+    calculateAccelerations(state.gravitationalConstant);
 
     for (auto& particle : m_particles)
     {
@@ -50,7 +52,7 @@ void GravitationalSimulation::update(float dt, const SimulationState &state)
     }
 }
 
-void GravitationalSimulation::calculateAccelerations()
+void GravitationalSimulation::calculateAccelerations(float G)
 {
     for (std::size_t i = 0; i < m_particles.size(); ++i)
     {
@@ -85,7 +87,7 @@ void GravitationalSimulation::calculateAccelerations()
                 direction * inverseDistance;
 
             const float accelerationMagnitude =
-                m_G *
+                1000 * G *
                 m_particles[j].mass /
                 distanceSquared;
 

@@ -2,7 +2,8 @@
 
 struct SimulationState
 {
-    float gravity = 500.0f;
+    float gravity = 98.0f;
+    float gravitationalConstant = 500.0f;
     float timeScale = 1.0f;
 
     // Performance

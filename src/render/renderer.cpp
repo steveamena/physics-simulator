@@ -13,11 +13,15 @@ ParticleRenderer::ParticleRenderer(int totalParticles, float radius)
 }
 void ParticleRenderer::syncGraphics(const Particles &particles)
 {
+    shapes.resize(particles.size());
+
     for (std::size_t i = 0; i < particles.size(); ++i)
     {
         const auto &particle = particles[i];
         auto &shape = shapes[i];
 
+        shape.setFillColor(sf::Color::Cyan);
+        shape.setRadius(particle.radius);
         shape.setPosition(
             {particle.position.x - particle.radius,
              particle.position.y - particle.radius});
@@ -27,9 +31,9 @@ void ParticleRenderer::syncGraphics(const Particles &particles)
 void ParticleRenderer::render(sf::RenderWindow &window, const Particles &particles)
 {
     syncGraphics(particles);
-    for (const auto &shape : shapes)
+    for (std::size_t i = 0; i < particles.size(); ++i)
     {
-        window.draw(shape);
+        window.draw(shapes[i]);
     }
 }
 
@@ -37,8 +41,8 @@ sf::RenderWindow initializeWindowRenderer(int window_width, int window_height, i
 {
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(
-                                {static_cast<int>(window_width),
-                                 static_cast<int>(window_height)}),
+                                {static_cast<unsigned int>(window_width),
+                                 static_cast<unsigned int>(window_height)}),
                             "SFML window");
     window.setFramerateLimit(limit_frame);
     return window;
