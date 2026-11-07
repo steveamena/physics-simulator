@@ -8,13 +8,21 @@ constexpr float WINDOW_WIDTH = 800.f;
 constexpr float WINDOW_HEIGHT = 600.f;
 
 Collisions::Collisions(int particle_count, float radius, float mass)
+    : particle_count(particle_count), radius(radius), mass(mass)
 {
+    reset();
+}
+
+void Collisions::reset()
+{
+    particles.clear();
+
     std::random_device rd;
     std::mt19937 gen(rd());
 
     for (int i = 0; i < particle_count; i++)
     {
-        Particle particle(radius, mass);
+        Particle particle(this->radius, this->mass);
 
         particle.position.x = getRandomRange(
             particle.radius,
@@ -135,7 +143,7 @@ void Collisions::update(float dt, const SimulationState &state)
     calculateVelocitiesAndResolveOverlap(particles, collisionPairs);
 }
 
-Particles Collisions::getParticles()
+const Particles& Collisions::getParticles() const
 {
     return particles;
 }

@@ -12,15 +12,22 @@ void UIManager::handleEvent(const sf::Window &window, const sf::Event &event)
     ImGui::SFML::ProcessEvent(window, event);
 }
 
-void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &state)
+bool UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &state,
+                       SimulationType& selectedSimulation)
 {
     ImGui::SFML::Update(window, dt);
 
-    ImGui::Begin("Collision Controls");
+    ImGui::Begin("Simulation Controls");
 
-    ImGui::Text("Play with the sliders");
+    const char* simulationNames[] = {"Collisions", "Gravity"};
+    int selectedIndex = static_cast<int>(selectedSimulation);
+    if (ImGui::Combo("Simulation", &selectedIndex, simulationNames, 2))
+        selectedSimulation = static_cast<SimulationType>(selectedIndex);
 
-    ImGui::SliderFloat("Gravitational Constant", &state.gravitationalConstant, 0.0f, 1000.0f);
+    if (selectedSimulation == SimulationType::Gravitational)
+        ImGui::SliderFloat("Gravitational Constant", &state.gravitationalConstant, 0.0f, 1000.0f);
+    else
+        ImGui::SliderFloat("Gravity", &state.gravity, 0.0f, 500.0f);
 
     ImGui::SliderFloat("Time Scale", &state.timeScale, 0.0f, 2.0f);
 
@@ -29,10 +36,7 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
     if (ImGui::Button(state.paused ? "Resume" : "Pause"))
         state.paused = !state.paused;
 
-    if (ImGui::Button("Reset"))
-    {
-        // will be wired later
-    }
+    const bool resetRequested = ImGui::Button("Reset");
 
     ImGui::Text("Frame Time: %.2f ms", state.frameTimeMs);
 
@@ -49,6 +53,8 @@ void UIManager::update(sf::RenderWindow &window, sf::Time dt, SimulationState &s
     ImGui::Text("CPU: %.1f %%", state.cpuUsage);
 
     ImGui::End();
+
+    return resetRequested;
 }
 
 void UIManager::render(sf::RenderWindow &window)

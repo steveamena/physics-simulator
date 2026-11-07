@@ -1,36 +1,64 @@
 #include "gravitational_simulation.hpp"
-#include "../utils/random.hpp"
-
-#include <iostream>
 #include <cmath>
 
 
 constexpr int LIMIT_FRAME = 60;
 constexpr float WINDOW_WIDTH = 800.f;
 constexpr float WINDOW_HEIGHT = 600.f;
+constexpr float PI = 3.14159265359f;
+constexpr float CENTRAL_MASS_MULTIPLIER = 100.f;
+constexpr float MIN_ORBIT_RADIUS = 80.f;
+constexpr float ORBIT_RADIUS_STEP = 8.f;
 
 
 
 GravitationalSimulation::GravitationalSimulation(int particle_count, float radius, float mass)
+    : m_particle_count(particle_count), m_radius(radius), m_mass(mass)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    reset();
+}
 
-    for (int i = 0; i < particle_count; i++)
+void GravitationalSimulation::reset()
+{
+    m_particles.clear();
+
+    const int particle_count = m_particle_count;
+    if (particle_count <= 0)
+        return;
+
+    const Vec2<float> center(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f);
+
+    Particle centralParticle(m_radius * 2.5f, m_mass * CENTRAL_MASS_MULTIPLIER);
+    centralParticle.position = center;
+    centralParticle.velocity = {0.0f, 0.0f};
+    m_particles.push_back(centralParticle);
+
+    const int satelliteCount = particle_count - 1;
+    const int ringCount = static_cast<int>(std::ceil(std::sqrt(
+        static_cast<float>(satelliteCount))));
+    for (int i = 0; i < satelliteCount; ++i)
     {
-        Particle particle(radius, mass);
+        Particle particle(m_radius, m_mass);
+        const int ring = i % ringCount;
+        const int particleInRing = i / ringCount;
+        const int particlesInRing =
+            (satelliteCount + ringCount - 1 - ring) / ringCount;
+        const float orbitRadius = MIN_ORBIT_RADIUS +
+                                   ORBIT_RADIUS_STEP * static_cast<float>(ring);
+        const float angle = 2.0f * PI * static_cast<float>(particleInRing) /
+                            static_cast<float>(particlesInRing);
 
-        particle.position.x = getRandomRange(
-            particle.radius,
-            WINDOW_WIDTH - particle.radius,
-            gen);
-        particle.position.y = getRandomRange(
-            particle.radius,
-            WINDOW_HEIGHT - particle.radius,
-            gen);
-        particle.velocity.x = getRandomRange(-100.f, 100.f, gen);
-        particle.velocity.y = getRandomRange(-100.f, 100.f, gen);
-        this->m_particles.push_back(std::move(particle));
+        particle.position = {
+            center.x + orbitRadius * std::cos(angle),
+            center.y + orbitRadius * std::sin(angle)};
+
+        const float orbitalSpeed = std::sqrt(
+            500.0f * centralParticle.mass / orbitRadius);
+        particle.velocity = {
+            -orbitalSpeed * std::sin(angle),
+            orbitalSpeed * std::cos(angle)};
+
+        m_particles.push_back(particle);
     }
         for (auto& particle : m_particles)
     {
@@ -87,9 +115,7 @@ void GravitationalSimulation::calculateAccelerations(float G)
                 direction * inverseDistance;
 
             const float accelerationMagnitude =
-                1000 * G *
-                m_particles[j].mass /
-                distanceSquared;
+                G * m_particles[j].mass / distanceSquared;
 
             acceleration +=
                 directionNormalized * accelerationMagnitude;
